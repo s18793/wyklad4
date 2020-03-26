@@ -31,15 +31,15 @@ namespace wyklad4.Controllers
             using (SqlCommand com = new SqlCommand()) 
             {
                 com.Connection = con;
-                com.CommandText = "select * from students";
+                com.CommandText = "select * from student";
 
                 con.Open();
                SqlDataReader dr= com.ExecuteReader();
                 while (dr.Read())
                 {
                     var st = new Student();
-                    st.IdOsoba = dr["IdOsoba"].ToString();
-                    st.NrIndeksu = dr["IdStudent"].ToString();
+                    st.IdOsoba = dr.GetInt32(0);
+                    st.NrIndeksu = dr["NrIndeksu"].ToString();
                     st.DataRekrutacji = dr["DataRekrutacji"].ToString();
                     list.Add(st);
                 }

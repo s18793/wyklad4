@@ -8,7 +8,7 @@ namespace wyklad4
     public class Student
     {
 
-        public string IdOsoba { get; set; }
+        public int IdOsoba { get; set; }
 
 
         public string NrIndeksu { get; set; }
