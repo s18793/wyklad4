@@ -37,7 +37,11 @@ namespace wyklad4.Controllers
                SqlDataReader dr= com.ExecuteReader();
                 while (dr.Read())
                 {
-                    var st
+                    var st = new Student();
+                    st.IdOsoba = dr["IdOsoba"].ToString();
+                    st.NrIndeksu = dr["IdStudent"].ToString();
+                    st.DataRekrutacji = dr["DataRekrutacji"].ToString();
+                    list.Add(st);
                 }
             }
 
@@ -47,6 +51,8 @@ namespace wyklad4.Controllers
 
          
             return Ok(list);
+
+            
         }
     }
 }
