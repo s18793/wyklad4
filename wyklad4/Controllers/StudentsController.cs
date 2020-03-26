@@ -28,13 +28,13 @@ namespace wyklad4.Controllers
             var list = new List<Student>();
 
             using (SqlConnection con = new SqlConnection(ConString))
-            using (SqlCommand com = new SqlCommand()) 
+            using (SqlCommand com = new SqlCommand())
             {
                 com.Connection = con;
                 com.CommandText = "select * from student";
 
                 con.Open();
-               SqlDataReader dr= com.ExecuteReader();
+                SqlDataReader dr = com.ExecuteReader();
                 while (dr.Read())
                 {
                     var st = new Student();
@@ -45,14 +45,51 @@ namespace wyklad4.Controllers
                 }
             }
 
-            
 
 
 
-         
+
+
             return Ok(list);
-
-            
         }
+
+
+
+
+         [HttpGet("{NrIndeksu}")]
+        public IActionResult GetStudent(string NrIndeksu)
+        {
+            using (SqlConnection con = new SqlConnection(ConString))
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.Connection = con;
+                com.CommandText = "select * from student where NrIndeksu = @indeks";
+
+
+                
+              
+
+                com.Parameters.AddWithValue("indeks", NrIndeksu);
+
+                con.Open();
+                var dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    var st = new Student();
+                
+                    st.IdOsoba = dr.GetInt32(0);
+                    st.NrIndeksu = dr["NrIndeksu"].ToString();
+                    st.DataRekrutacji = dr["DataRekrutacji"].ToString();
+                    return Ok(st);
+                }
+
+            }
+
+            return NotFound();
+        }
+
+
+
+
     }
 }
