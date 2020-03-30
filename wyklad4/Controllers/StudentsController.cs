@@ -85,11 +85,41 @@ namespace wyklad4.Controllers
 
             }
 
-            return NotFound();
+            return NotFound();                    //{"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404,"traceId":"|73f283ec-438686a053a309b9."}
         }
 
 
+        [HttpGet("roll")]
+        public IActionResult GetStudents2()
+        {
+            using (SqlConnection con = new SqlConnection(ConString))
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.Connection = con;
+                com.CommandText = "insert into Student(FirstName) values (@firstName)";
 
 
+                con.Open();
+                SqlTransaction transaction = con.BeginTransaction();
+
+                try
+                {
+                    int affectedRows = com.ExecuteNonQuery();
+
+                    com.CommandText = "update into Students where nrindeksu==0";
+                    com.ExecuteNonQuery();
+
+                   
+                    transaction.Commit();
+                }
+                catch (Exception exc)
+                {
+                    transaction.Rollback();
+                }
+
+            }
+
+            return Ok();
+        }
     }
 }
