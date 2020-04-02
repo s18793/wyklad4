@@ -8,11 +8,16 @@ namespace wyklad4
     public class Student
     {
 
-        public int IdOsoba { get; set; }
+        public string IndexNumber { get; set; }
 
 
-        public string NrIndeksu { get; set; }
+        public string FirstName { get; set; }
 
-        public string DataRekrutacji { get; set; }
+        public string LastName { get; set; }
+
+        public DateTime Birthday { get; set; }
+        public string Studies { get; set; }
+        public int Semester { get; set; }
+
     }
 }

@@ -11,5 +11,16 @@ namespace wyklad4.Controllers
     [ApiController]
     public class EnrollmentsController : ControllerBase
     {
+
+        [HttpPost]
+        public IActionResult EnrollStudent(Student nStudent) {
+            //Dtos - przerzucenie jakis danych miedzy 2 pkt
+
+
+
+
+            return Ok();
+        }
+
     }
 }
