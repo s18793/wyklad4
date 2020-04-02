@@ -38,9 +38,9 @@ namespace wyklad4.Controllers
                 while (dr.Read())
                 {
                     var st = new Student();
-                    st.IdOsoba = dr.GetInt32(0);
-                    st.NrIndeksu = dr["NrIndeksu"].ToString();
-                    st.DataRekrutacji = dr["DataRekrutacji"].ToString();
+                    st.IndexNumber = dr["IndexNumber"].ToString();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
                     list.Add(st);
                 }
             }
@@ -76,10 +76,10 @@ namespace wyklad4.Controllers
                 while (dr.Read())
                 {
                     var st = new Student();
-                
-                    st.IdOsoba = dr.GetInt32(0);
-                    st.NrIndeksu = dr["NrIndeksu"].ToString();
-                    st.DataRekrutacji = dr["DataRekrutacji"].ToString();
+
+                    st.IndexNumber = dr["IndexNumber"].ToString();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
                     return Ok(st);
                 }
 

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace wyklad4.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/enrollments")]
     [ApiController]
     public class EnrollmentsController : ControllerBase
     {
 
         [HttpPost]
-        public IActionResult EnrollStudent(Student nStudent) {
+        public IActionResult EnrollStudent(EnrollmentsController nStudent) {
             //Dtos - przerzucenie jakis danych miedzy 2 pkt
 
 
