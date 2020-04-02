@@ -9,7 +9,7 @@ using wyklad4.DTOs;
 namespace wyklad4.Controllers
 {
     [Route("api/enrollments")]
-    [ApiController]
+    [ApiController] 
     public class EnrollmentsController : ControllerBase
     {
 
@@ -17,12 +17,16 @@ namespace wyklad4.Controllers
         public IActionResult EnrollStudent(EnrollStudentRequest request) {
             //Dtos - przerzucenie jakis danych miedzy 2 pkt
 
+         
             var st=new Student();
             st.FirstName = request.FirstName;
             st.LastName = request.LastName;
-            st.IndexNumber = request.IndexNumber;
-            st.Birthday = request.Birthday;
+            st.IndexNumber = request.IndexNumber;    
             st.Studies = request.Studies;
+
+
+
+
 
 
             var response = new EnrollStudentResponse();

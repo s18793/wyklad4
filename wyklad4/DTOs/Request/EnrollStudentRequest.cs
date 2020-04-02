@@ -9,23 +9,24 @@ namespace wyklad4.DTOs
     public class EnrollStudentRequest : Attribute
     {
 
-        [Required]
-        [RegularExpression("^s[0-9]+$")]
+
+        [Required(ErrorMessage = "podaj index")]
+        [RegularExpression("^s[0-9]+$")] 
         public string IndexNumber { get; set; }
-
-        [Required]
+       
+        [Required(ErrorMessage = "podaj imię")]
         [MaxLength(100)]
-
         public string FirstName { get; set; }
-
-       [Required]
-       [MaxLength(100)]
+       
+        
+        [Required(ErrorMessage = "podaj nazwisko")]
+        [MaxLength(100)]
         public string LastName { get; set; }
-
-        [Required]
-        public DateTime Birthday { get; set; }
-
-        [Required]
+       
+        [Required(ErrorMessage = "podaj date urodzenia")]
+        public string BirthDay { get; set; }
+        
+        [Required(ErrorMessage = "podaj kierunek studiów")]
         public string Studies { get; set; }
     }
 }
