@@ -17,13 +17,6 @@ namespace wyklad4.Controllers
         public IActionResult EnrollStudent(EnrollStudentRequest request) {
             //Dtos - przerzucenie jakis danych miedzy 2 pkt
 
-
-            if (request.FirstName == null || request.LastName == null || request.IndexNumber==null
-               || request.Birthday==null || request.Studies==null)
-            {
-                return BadRequest("Nie zostały podane wszystkie wartości");
-            }
-
             var st=new Student();
             st.FirstName = request.FirstName;
             st.LastName = request.LastName;
@@ -34,9 +27,13 @@ namespace wyklad4.Controllers
 
             var response = new EnrollStudentResponse();
             response.LastName = st.LastName;
-
-
-
+            /*
+            if (request.FirstName == null || request.LastName == null || request.IndexNumber == null
+               || request.Birthday == null || request.Studies == null)
+            {
+                return BadRequest("Nie zostały podane wszystkie wartości");
+            }
+            */
 
             return Ok();
         }
