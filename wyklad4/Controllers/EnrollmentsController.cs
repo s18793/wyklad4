@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using wyklad4.DTOs;
+using wyklad4.Models;
 
 namespace wyklad4.Controllers
 {
@@ -13,7 +15,9 @@ namespace wyklad4.Controllers
     public class EnrollmentsController : ControllerBase
     {
 
+
         [HttpPost]
+       
         public IActionResult EnrollStudent(EnrollStudentRequest request) {
             //Dtos - przerzucenie jakis danych miedzy 2 pkt
 
@@ -31,13 +35,14 @@ namespace wyklad4.Controllers
 
             var response = new EnrollStudentResponse();
             response.LastName = st.LastName;
-            /*
+           
             if (request.FirstName == null || request.LastName == null || request.IndexNumber == null
-               || request.Birthday == null || request.Studies == null)
+               || request.BirthDay == null || request.Studies == null)
             {
                 return BadRequest("Nie zostały podane wszystkie wartości");
             }
-            */
+              
+            
 
             return Ok();
         }

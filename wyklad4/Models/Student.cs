@@ -17,9 +17,9 @@ namespace wyklad4
 
         public string LastName { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public string Birthday { get; set; }
         public string Studies { get; set; }
-        public int Semester { get; set; }
+        public string Semester { get; set; }
 
     }
 }

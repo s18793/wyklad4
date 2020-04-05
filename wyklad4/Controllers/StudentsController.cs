@@ -31,7 +31,9 @@ namespace wyklad4.Controllers
             using (SqlCommand com = new SqlCommand())
             {
                 com.Connection = con;
-                com.CommandText = "select * from student";
+                com.CommandText = "select FirstName,LastName,Birthday, Studies.name, Enrollment.semester from Student "
+
+                
 
                 con.Open();
                 SqlDataReader dr = com.ExecuteReader();
