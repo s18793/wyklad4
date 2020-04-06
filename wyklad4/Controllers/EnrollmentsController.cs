@@ -8,56 +8,50 @@ using Microsoft.AspNetCore.Mvc;
 
 using wyklad4.DTOs;
 using wyklad4.Models;
+using wyklad4.Services;
 
 namespace wyklad4.Controllers
 {
+
+
     [Route("api/enrollments")]
-    [ApiController] //-> implict model validation
+    [ApiController]
     public class EnrollmentsController : ControllerBase
     {
 
-        private const string ConString = "Data Source=db-mssql;Initial Catalog=s18793;Integrated Security=True";
         [HttpPost]
+        public IActionResult EnrollStudent(EnrollStudentRequest request)
+        {
 
-        public IActionResult EnrollStudent(EnrollStudentRequest request) {
-            //Dtos - przerzucenie jakis danych miedzy 2 pkt
-
-
-            var st = new Student();
-
-            st.FirstName = request.FirstName;
-            st.LastName = request.LastName;
-            st.IndexNumber = request.IndexNumber;
-            st.Birthday = request.BirthDay;
-            st.Studies = request.Studies;
-
-
-            int idEnrollment;
-            using (var con = new SqlConnection(ConString))
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s18793;Integrated Security=True"))
             using (var com = new SqlCommand())
+            using (var tran = con.BeginTransaction())
             {
-                com.Connection = con;
-
                 con.Open();
-                var tran = con.BeginTransaction();
-                try {
+                com.Connection = con;
+                com.Transaction = tran;
+
+                var dr = com.ExecuteReader();
+                try
+                {
                     //czy studia isntijea
                     com.CommandText = "select IdStudies from studies where name=@name";
                     com.Parameters.AddWithValue("name", request.Studies);
-                    var dr = com.ExecuteReader();
+
                     if (!dr.Read())
                     {
+                        dr.Close();
                         tran.Rollback();
                         return BadRequest("Nie ma takich stud");
                     }
-                    int idStudies = (int)dr["Studies"];
 
                     dr.Close();
+                    int idStudies = (int)dr["Studies"];
 
                     com.CommandText = "Select  enr.IdEnrollment, enr.Semester,enr.IdStudy From Enrollment enr inner join Studies s on enr.IdStudy=s.IdStudy where enr.semester=1 and s.Name=@name";
-                    
-                    com.CommandText = "select Max(IdEnrollment) As maxEnroll from Enrollment";
-                    
+                    int idEnrollment;
+
+
                     dr = com.ExecuteReader();
 
                     if (!dr.Read())
@@ -65,18 +59,31 @@ namespace wyklad4.Controllers
                         idEnrollment = 1;
                         dr.Close();
                     }
-                    else { 
+                    else
+                    {
+
+                        com.CommandText = "select Max(IdEnrollment) As maxEnroll from Enrollment";
+                        idEnrollment = (int)dr["maxEnroll"];
                         com.CommandText = "insert into enrollment (IdEnrollment,semester,Idstudy,startdate)" + "values(IdEnrollment,1,@idstudy,@date)";
-                        com.Parameters.AddWithValue("IdStudies", request.Studies);
-                        com.Parameters.AddWithValue("date", DateTime.Now.ToString());
-                        idEnrollment = (int)dr["IdEnrollment"];
-                        dr = com.ExecuteReader();
 
                         dr.Close();
                     }
-                    
-                  
 
+                    com.Parameters.AddWithValue("IdStudies", request.Studies);
+                    com.Parameters.AddWithValue("date", DateTime.Now.ToString());
+
+                    com.ExecuteNonQuery();
+
+
+                    var enrollRepso = new EnrollStudentResponse
+                    {
+                        IdEnrollment = idEnrollment,
+                        Semester = 1,
+                        Name = dr["name"].ToString(),
+                        StartDate = DateTime.Parse(dr["date"].ToString())
+
+
+                    };
                     com.CommandText = "Insert into Student(IndexNumber, Firstname, lastname, birthday, studies,semester,IdEnrollment) values(@Index,@fname,@lname,@bday,@stud,@IdEnrollment)";
                     com.Parameters.AddWithValue("index", request.IndexNumber);
                     com.Parameters.AddWithValue("fname", request.FirstName);
@@ -85,14 +92,23 @@ namespace wyklad4.Controllers
                     com.Parameters.AddWithValue("stud", request.Studies);
                     com.Parameters.AddWithValue("IdEnrollment", idEnrollment);
                     com.ExecuteNonQuery();
-                }catch(SqlException exc)
+                    com.Transaction.Commit();
+                    return Ok(enrollRepso);
+                }
+                catch (SqlException exc)
                 {
+
                     tran.Rollback();
+                    return BadRequest("!!");
                 }
 
-                }
+            }
 
+        }
+    }
+}
 
+            /*
             var response = new EnrollStudentResponse();
             response.LastName = st.LastName;
            
@@ -103,9 +119,10 @@ namespace wyklad4.Controllers
             }
               
             
-
+   
             return Ok();
+            
         }
 
     }
-}
+}*/

@@ -8,8 +8,7 @@ namespace wyklad4
     public class Student
     {
 
-
-        public int IdStudent { get; set; }
+       
         public string IndexNumber { get; set; }
 
 
@@ -17,9 +16,8 @@ namespace wyklad4
 
         public string LastName { get; set; }
 
-        public string Birthday { get; set; }
+        public DateTime Birthday { get; set; }
         public string Studies { get; set; }
-        public string Semester { get; set; }
-
+        
     }
 }
