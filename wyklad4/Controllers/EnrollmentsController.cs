@@ -84,6 +84,9 @@ namespace wyklad4.Controllers
 
 
                     };
+                    dr.Close();
+
+
                     com.CommandText = "Insert into Student(IndexNumber, Firstname, lastname, birthday, studies,semester,IdEnrollment) values(@Index,@fname,@lname,@bday,@stud,@IdEnrollment)";
                     com.Parameters.AddWithValue("index", request.IndexNumber);
                     com.Parameters.AddWithValue("fname", request.FirstName);
@@ -104,6 +107,9 @@ namespace wyklad4.Controllers
 
             }
 
+        }
+
+        public IActionResult PromoteStudent() { 
         }
     }
 }
