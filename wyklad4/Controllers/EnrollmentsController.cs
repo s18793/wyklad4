@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using wyklad4.DTOs;
+using wyklad4.DTOs.Request;
 using wyklad4.Models;
 using wyklad4.Services;
 
@@ -109,7 +110,8 @@ namespace wyklad4.Controllers
 
         }
 
-        public IActionResult PromoteStudent() { 
+        public IActionResult PromoteStudent(PromoteStudentRequest promoteStudentRequest) { 
+
         }
     }
 }

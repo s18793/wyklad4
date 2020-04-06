@@ -7,5 +7,9 @@ namespace wyklad4.DTOs.Response
 {
     public class PromoteStudentResponse
     {
+        public int IdEnrollment { get; set; }
+        public string Semester { get; set; }
+        public string IdStudy { get; set; }
+        public DateTime StartDate { get; set; }
     }
 }
