@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace wyklad4.Controllers
                     {
                         dr.Close();
                         tran.Rollback();
-                        return BadRequest("Nie ma takich stud");
+                        return BadRequest(400 + "Nie ma takich stud");
                     }
 
                     dr.Close();
@@ -109,12 +110,60 @@ namespace wyklad4.Controllers
             }
 
         }
+        [Route("api/promotions")]
+        [HttpPut]
+        public IActionResult PromoteStudents(PromoteStudentRequest promoteStudentRequest)
+        {
+            
+                using (SqlConnection con = new SqlConnection("Data Source = db - mssql; Initial Catalog = s18793; Integrated Security = True"))
+                using (SqlCommand com = new SqlCommand())
+                using (var tran = con.BeginTransaction())
+               {
+                con.Open();
+                com.Connection = con;
+                com.Transaction = tran;
+                try
+                    {
+                  
+                     
 
-        public IActionResult PromoteStudent(PromoteStudentRequest promoteStudentRequest) { 
+                        com.CommandText = "SELECT * FROM Enrollment e INNER JOIN Studies stud ON stud.idstudy = e.idstudy WHERE e.semester = Semest AND stud.name = stName";
+                        com.Parameters.AddWithValue("stName", promoteStudentRequest.Name);
+                        com.Parameters.AddWithValue("Semest", promoteStudentRequest.Semester);
+                        var dr = com.ExecuteReader();
 
-        }
-    }
+                    if (!dr.Read())
+                    {
+                        dr.Close();
+                        tran.Rollback();
+
+                        return BadRequest(404);
+                    }
+                    else
+                    {
+                        
+                        com.CommandText = "exec PromoteStudents @name, @semester";
+                        com.Parameters.AddWithValue("semester", promoteStudentRequest.Semester);
+                        com.Parameters.AddWithValue("name", promoteStudentRequest.Name);
+                        com.ExecuteNonQuery();
+                        dr.Close();
+                    }
+                    }
+                
+                catch (SqlException e)
+                {
+                    tran.Rollback();
+                }
+
+
+            }
+
+            return Ok();
+        }   
+    } 
 }
+
+
 
             /*
             var response = new EnrollStudentResponse();
