@@ -112,7 +112,7 @@ namespace wyklad4.Controllers
         }
         [Route("api/promotions")]
         [HttpPut]
-        public IActionResult PromoteStudents(PromoteStudentRequest promoteStudentRequest)
+        public IActionResult PromoteStudents(PromoteStudentResponse promoteStudentRequest)
         {
             
                 using (SqlConnection con = new SqlConnection("Data Source = db - mssql; Initial Catalog = s18793; Integrated Security = True"))
