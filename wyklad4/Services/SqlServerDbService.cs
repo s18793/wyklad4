@@ -21,14 +21,15 @@ namespace wyklad4.Services
 
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest request)
         {
-            EnrollStudentResponse enrollRepso;
+           
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s18793;Integrated Security=True"))
             using (var com = new SqlCommand())
             using (var tran = con.BeginTransaction())
             {
+                EnrollStudentResponse enrollRepso = new EnrollStudentResponse();
 
 
-                
+
                 con.Open();
                 com.Connection = con;
                 com.Transaction = tran;
@@ -85,18 +86,18 @@ namespace wyklad4.Services
                     com.Parameters.AddWithValue("stud", request.Studies);
                     com.Parameters.AddWithValue("IdEnrollment", idEnrollment);
                     com.ExecuteNonQuery();
-                    
 
 
-                    enrollRepso = new EnrollStudentResponse()
-                    {
-                        IdEnrollment = idEnrollment,
-                        Semester = 1,
-                        Name = dr["name"].ToString(),
-                        StartDate = DateTime.Parse(dr["date"].ToString())
 
 
-                    };
+
+                   enrollRepso.IdEnrollment = idEnrollment;
+                     enrollRepso.Semester = 1;
+                    enrollRepso.Name = dr["name"].ToString();
+                    enrollRepso.StartDate = DateTime.Parse(dr["date"].ToString();
+
+
+                  
                     tran.Commit();
                    
 
@@ -117,11 +118,12 @@ namespace wyklad4.Services
       
         public PromoteStudentResponse PromoteStudent(PromoteStudentRequest psrequest)
         {
-            PromoteStudentResponse response;
+            
             using (SqlConnection con = new SqlConnection("Data Source = db - mssql; Initial Catalog = s18793; Integrated Security = True"))
             using (SqlCommand com = new SqlCommand())
             using (var tran = con.BeginTransaction())
             {
+                PromoteStudentResponse response = new PromoteStudentResponse();
                 con.Open();
                 com.Connection = con;
                 com.Transaction = tran;
@@ -129,40 +131,46 @@ namespace wyklad4.Services
                 {
 
 
+                    com.CommandText = "exec PromoteStudents @name, @semester";
+                    com.Parameters.AddWithValue("semester", psrequest.Semester);
+                    com.Parameters.AddWithValue("name", psrequest.Name);
+                    com.ExecuteNonQuery();
+
 
                     com.CommandText = "SELECT * FROM Enrollment e INNER JOIN Studies stud ON stud.idstudy = e.idstudy WHERE e.semester = Semest AND stud.name = stName";
                     com.Parameters.AddWithValue("stName", psrequest.Name);
                     com.Parameters.AddWithValue("Semest", psrequest.Semester);
                     var dr = com.ExecuteReader();
 
-                  
+
                     if (!dr.Read())
                     {
                         dr.Close();
                         tran.Rollback();
 
-                       
+
                     }
                     else
                     {
 
-                        com.CommandText = "exec PromoteStudents @name, @semester";
-                        com.Parameters.AddWithValue("semester", psrequest.Semester);
-                        com.Parameters.AddWithValue("name", psrequest.Name);
-                        com.ExecuteNonQuery();
-                        dr.Close();
-                    }
-                    response = new DTOs.Response.PromoteStudentResponse()
-                    {
-                        ////!!!
+                        response.IdEnrollment = (int)dr["IdEnrollment"];
+                        response.IdStudy = dr["IdStudy"].ToString();
+                        response.Semester = dr["Semester"].ToString();
+                        response.StartDate = (DateTime)dr["StartDate"];
+
 
                     }
-                   
 
+
+
+
+
+
+                }
                 catch (SqlException e)
                 {
                     tran.Rollback();
-                    
+
                 }
 
                 return response;
