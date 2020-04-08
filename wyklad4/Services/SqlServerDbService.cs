@@ -94,7 +94,7 @@ namespace wyklad4.Services
                    enrollRepso.IdEnrollment = idEnrollment;
                      enrollRepso.Semester = 1;
                     enrollRepso.Name = dr["name"].ToString();
-                    enrollRepso.StartDate = DateTime.Parse(dr["date"].ToString();
+                    enrollRepso.StartDate = DateTime.Parse(dr["date"].ToString());
 
 
                   
