@@ -32,7 +32,7 @@ namespace wyklad4
         {
             services.AddControllers();
 
-
+            services.AddScoped<IStudentDBService, SqlServerDbService>();
             //1
             services.AddSwaggerGen(config =>
             {
@@ -57,6 +57,8 @@ namespace wyklad4
                 config.SwaggerEndpoint("/swagger/v1/swagger.json", "Students App Api");
             });
 
+            app.UseMiddleware<LoggingMiddleware>();
+            
             app.Use(async (contex, next) =>
             {
                 if (!contex.Request.Headers.ContainsKey("Index"))
