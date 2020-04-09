@@ -16,6 +16,12 @@ namespace wyklad4.Middlewares
         public async Task InvokeAsync(HttpContext httpContext)
         {
             //Our code
+
+
+
+
+
+
             await _next(httpContext);
         }
     }

@@ -179,7 +179,32 @@ namespace wyklad4.Services
             
         }
 
-       
+        public bool StudentExist(string nrineksu)
+        {
+            bool isExist = false;
+
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s18793;Integrated Security=True"))
+            using (var com = new SqlCommand())
+            {
+                
+                com.Connection = con;
+                com.CommandText = "SELECT indexNumber FROM Student WHERE indexNumber = @indexNumber; ";
+                com.Parameters.AddWithValue("indexNumber", nrineksu);
+
+                con.Open();
+                var dr = com.ExecuteReader();
+                
+                if (dr.Read())
+                {
+                    isExist = true;
+                }
+
+
+            }
+
+            return isExist;
+        }
+
     }
 
 }

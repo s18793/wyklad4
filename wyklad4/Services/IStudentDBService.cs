@@ -14,5 +14,6 @@ namespace wyklad4.Services
     {
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest esrequest);
         public PromoteStudentResponse PromoteStudent(PromoteStudentRequest psrequest);
+        public bool StudentExist(string nrineksu);
     }
 }
